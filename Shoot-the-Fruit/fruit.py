@@ -4,21 +4,31 @@ from random import randint
 #define size windoes
 WIDTH = 640
 HEIGHT = 480
-
+score = 0
+time_count = 0
+timer = 0
+game_over = False
 #ctreate object
 apple = Actor('apple')
 pineapple = Actor('pineapple')
 orange = Actor('orange')
+
 # function for display
 def draw():
-  score1 = 0
+  global score
   screen.clear()
   screen.fill ((80,135,255))
-  
   apple.draw()
   pineapple.draw()
   orange.draw()
- 
+  screen.draw.text("Score : "+str(score),color = 'black', topleft=(550,10))
+  screen.draw.text("Time : "+str(timer),color = 'black', topleft=(10,10))
+  
+  if game_over:
+    screen.fill('black')
+    message = "Final Score : " +str(score)
+    screen.draw.text(message, topleft=(280,150), fontsize = 50)
+
 
 
 # function random
@@ -36,31 +46,46 @@ def place_orange() :
  
 #function get event mouse
 def on_mouse_down(pos):
-  print(pos)
-  sounds.click.play()
+  global score
+
   if apple.collidepoint(pos):
     print("Good Shot")
+    sounds.click.play()
     place_apple()
-    
-  elif pineapple.collidepoint(pos):
+    score += 2
+  
+  if pineapple.collidepoint(pos):
     print("Good Shot")
+    sounds.click.play()
     place_pineapple()
-    
+    score += 1
 
-  elif orange.collidepoint(pos):
+  if orange.collidepoint(pos):
     print("Good Shot")
+    sounds.click.play()
     place_orange()
-  else:
-    print("You are missed")
-#define update score
+    score +=1
 def update():
-  if place_apple
-    fox.score = fox.score +1
-  elif place_pineapple()
-    fox.score = fox.score +1
-   
-          
- 
+  apple.y += 2
+  orange.y +=2
+  pineapple.y +=2
+  if apple.y > HEIGHT:
+    apple.y = 0
+  if pineapple.y > HEIGHT:
+    pineapple.y = 0
+  if orange.y > HEIGHT:
+    orange.y = 0
+def time_up():
+  global game_over
+  game_over = True
+  
+def time_count():
+  global timer
+  timer +=1
+
+clock.schedule(time_up, 10.0)
+clock.schedule_interval(time_count ,1.0)
+  
 place_apple()
 place_pineapple()
 place_orange()
